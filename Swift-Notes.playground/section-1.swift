@@ -1,6 +1,7 @@
 // Playground - noun: a place where people can play
 
 import Cocoa
+import UIKit
 
 var str = "Hello, playground"
 
@@ -169,7 +170,7 @@ func tappedSomething(sender: String) {
 
 /*
 
-Functions & CLOSURES
+Functions & Closures
 */
 
 func computeSquare(value: Double) -> Double {
@@ -268,5 +269,177 @@ class ParentsCar: Car {
     }
 }
 
+class Counter {
+    var count = 0
+    func incrementBy(amount: Int) {
+        count += amount
+    }
+    
+    func resetToCount(count: Int) {
+        self.count = count //only need to use self if a naming conflict
+    }
+}
+
+/*
+
+STRUCTURES
+*/
+
+struct Point {
+    var x,y: Double
+}
+
+struct Size {
+    var width, height: Double
+}
+
+struct Rect {
+    var origin: Point
+    var size: Size
+    
+    var area: Double {
+        return size.width * size.height
+    }
+    
+    func isBiggerThanRect(other: Rect) -> Bool {
+        return area > other.area
+    }
+
+}
+
+let point = Point(x: 0.0, y: 0.0)
+let size = Size(width: 100, height: 100)
+let rect = Rect(origin: point, size: size)
 
 
+//Diference of struct and class?
+//
+// 1. Structs cannot be subclassed
+// 2. Structs are moved around, and not referenced
+
+//class Window {
+//    var frame: Rect
+//    
+//}
+
+//Value Types:
+//Mutating a STructure!!!
+struct Point2 {
+    var x, y: Double
+    
+    mutating func motToTheRightBy(dx: Double) {
+        x += dx
+    }
+}
+
+//enumerations:
+enum Planet: Int {
+    case Mercury = 1, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune
+}
+
+let earthNumber = Planet.Mercury
+
+enum CompassPoint {
+    case North, South, East, West
+}
+
+var directionToHead = CompassPoint.West
+directionToHead = .East //don't have to retype CompassPoint
+
+let label = UILabel()
+label.textAlignment = .Right //much easier
+
+
+enum TrainStatus {
+    case OnTime, Delayed(Int)
+    
+    init() { //set default
+        self = OnTime
+    }
+    var description: String {
+        switch self {
+            case Ontime:
+            return "on time"
+        case Delayed( let minutes):
+            return "late by \(minutes) minute(s)"
+        default:
+            return "unsure"
+        }
+    }
+}
+
+var trainStatus = TrainStatus() //status is inferred to be a TrainStatus
+status.description
+status = .Delayed(42)
+status.description
+
+//class Train {
+//    enum Status {
+//        case OnTime, Delayed(Int)
+//        
+//        init() { //set default
+//            self = OnTime
+//        }
+//        var description: String {
+//            switch self {
+//            case Ontime:
+//                return "on time"
+//            case Delayed( let minutes):
+//                return "late by \(minutes) minute(s)"
+//            default:
+//                return "unsure"
+//        }
+//    }
+//    var thisStatus = Status()
+//}
+//
+//
+///* 
+//
+//Extensions
+//*/
+//
+//extension Size {
+//    mutation func increaseByFactor(factor: Int) {
+//        width *= factor
+//        height *= factor
+//    }
+//}
+//
+//extension Int {
+//    func reptitions(task: () -> ()) {
+//        for i in 0..self {
+//            task()
+//        }
+//    }
+//}
+//
+//500.reptitions({
+//    println("Hello!")
+//})
+//
+
+/* 
+
+Generics
+*/
+
+struct Stack<T> {
+    var elements = T[]()
+    
+    mutating func push(element: T) {
+        elements.append(element)
+    }
+    
+    mutating func pop() -> T {
+        return elements.removeLast()
+    }
+}
+
+var intStack = Stack<Int>()
+intStack.push(50)
+var lastIn = intStack.pop()
+
+var stringStack = Stack<String>()
+stringStack.push("Hello")
+println(stringStack.pop())
